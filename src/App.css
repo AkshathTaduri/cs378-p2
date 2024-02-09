@@ -3,6 +3,89 @@
   Below, you can see an example of a class called "menu" that changes the color of the text to blue. Modify according to your needs.
 */
 
-.menu {
-  color: blue;
+.logo {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.styled-heading {
+  font-family: 'courier new', courier, monospace;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a5e1f;
+  margin-bottom: 5px;
+  text-align: center;
+  font-style: italic;
+}
+
+.heading {
+  font-size: 20px;
+  color: #000000;
+  margin-bottom: 80px;
+  text-align: center;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 5px;
+}
+
+.item-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.item-image {
+  margin-top: 10px;
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  border: 1px solid #000000;
+  object-fit: cover;
+}
+
+.item-text {
+  margin-left: 20px;
+  line-height: 80%;
+}
+
+.item-price {
+  font-size: 15px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.item-description {
+  font-size: 12px;
+  font-weight: 400;
+  color: #000000;
+}
+
+.item-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.item-button {
+  justify-content: space-between;
+  align-items: center;
+  height: 16px;
+  border-radius: 10px;
+  background-color: #1a5e1f;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 500;
+  text-decoration: none;
+  text-align: center;
+  margin-right: 10px;
 }
