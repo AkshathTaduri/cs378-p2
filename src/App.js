@@ -1,5 +1,8 @@
+import React, {useState} from 'react';
 import './App.css';
 import MenuItem from './components/MenuItem';
+import Subtotal from './components/Subtotal';
+import Heading from './components/Heading';
 
 // import 'bootstrap/dist/css/bootstrap.min.css'; // This imports bootstrap css styles. You can use bootstrap or your own classes by using the className attribute in your elements.
 
@@ -38,21 +41,99 @@ const menuItems = [
 
 
 function App() {
+  const [cart, setCart] = useState({});
+
+  const addToCart = (itemId) => {
+    setCart((prevCart) => {
+      const updatedCart = { ...prevCart};
+      updatedCart[itemId] = (updatedCart[itemId] || 0) + 1;
+      return updatedCart;
+    });
+  }
+
+  const removeFromCart = (itemId) => {
+    setCart((prevCart) => {
+      const updatedCart = {...prevCart};
+      if (updatedCart[itemId] > 0) {
+        updatedCart[itemId] -= 1;
+        if (updatedCart[itemId] === 0) {
+          delete updatedCart[itemId];
+        }
+      }
+      return updatedCart;
+    });
+  };
+
+  const clearCart = () => {
+    setCart({});
+  };
+
+  const calculateTotal = () => {
+    return Object.keys(cart).reduce((total, itemId)  => {
+      const menuItem = menuItems.find((menu) => menu.id === parseInt(itemId, 10));
+      return total + menuItem.price * cart[itemId];
+    }, 0);
+  }
+
+  const OrderPopup = () => {
+    return (
+      <div className="order-popup-container">
+        <div className="order-popup">
+          <h2>Your Order</h2>
+          <ul>
+            {Object.keys(cart).map((itemId) => {
+              const menuItem = menuItems.find((menu) => menu.id === parseInt(itemId, 10));
+              return (
+                <li key={itemId}>
+                  {cart[itemId]} {menuItem.title}
+                </li>
+              );
+            })}
+          </ul>
+          <button onClick={() => setOrderPopupVisible(false)}>OK</button>
+        </div>
+      </div>
+    );
+  };
+
+  const [orderPopupVisible, setOrderPopupVisible] = useState(false);
+
+  const orderItems = () => {
+    if (Object.keys(cart).length === 0) {
+      alert("No items in cart");
+    } else {
+      setOrderPopupVisible(true);
+    }
+  };
+
   return (
     <div>
-      <img src="https://logos-world.net/wp-content/uploads/2023/06/Wingstop-Logo-1994.png" alt="Wingstop" class="logo"></img>
-      <p class="styled-heading">Where Flavor Gets Its Wings</p>
-      <p class="heading">Order Online</p>
+      <Heading
+        imageSrc={"https://logos-world.net/wp-content/uploads/2023/06/Wingstop-Logo-1994.png"}
+        altText={"Wingstop"}
+        heading={"Where Flavor Gets Its Wings"}
+        subHeading={"Order Online"}
+      />
       <div className="menu">
         {menuItems.map((item) => (
           <MenuItem
+            id={item.id}
             title={item.title}
-            description={item.description}
             imageName={item.imageName}
             price={item.price}
+            addToCart={addToCart}
+            removeFromCart={removeFromCart}
+            quantity={cart[item.id] || 0}
           />
         ))}
       </div>
+
+      <Subtotal
+        subtotal={calculateTotal()}
+        clearCart={clearCart}
+        orderItems={orderItems}
+      />
+      {orderPopupVisible && <OrderPopup />}
     </div>
   );
 }
